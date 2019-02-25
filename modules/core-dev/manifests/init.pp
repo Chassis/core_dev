@@ -17,13 +17,28 @@
 #
 # ***********************************
 
-class example (
+class core-dev (
 	$config
 ) {
-	if $config['show_example'] {
-		notify { "Here's my message: ${config['show_example']}": }
+	# Create vagrant-core.local
+	chassis::site { 'vagrant-core.local':
+		location          => '/vagrant/wordpress-develop/src',
+		wpdir             => '/vagrant/wordpress-develop/src',
+		contentdir        => '/vagrant/wordpress-develop/src/wp-content',
+		hosts             => ['vagrant-core.local'],
+		database          => 'vagrantcore_local',
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		admin_user        => $config[admin][user],
+		admin_email       => $config[admin][email],
+		admin_password    => $config[admin][password],
+		sitename          => $config[site][name],
+		require => [
+			Class['chassis::php'],
+			Package['git-core'],
+			Class['mysql::server'],
+		]
 	}
-
 # This is an example of how you can use disabled_extensions in the yaml files to add or remove packages.
 # 	if ( ! empty( $config[disabled_extensions] ) and 'chassis/example' in $config[disabled_extensions] ) {
 # 		$package = absent
