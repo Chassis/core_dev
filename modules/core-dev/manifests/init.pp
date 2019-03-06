@@ -40,6 +40,11 @@ class core-dev (
 	# 	]
 	# }
 
+	# Ensure SVN is installed.
+	package { 'subversion':
+		ensure => 'present',
+	}
+
 	# package { 'php-package-name':
 	# 	ensure  => $package
 	# }
