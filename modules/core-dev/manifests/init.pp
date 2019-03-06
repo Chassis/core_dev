@@ -39,15 +39,7 @@ class core-dev (
 			Class['mysql::server'],
 		]
 	}
-# This is an example of how you can use disabled_extensions in the yaml files to add or remove packages.
-# 	if ( ! empty( $config[disabled_extensions] ) and 'chassis/example' in $config[disabled_extensions] ) {
-# 		$package = absent
-# 		$file    = absent
-# 	} else {
-# 		$package = latest
-# 		$file    = present
-# 	}
-#
+
 # 	package { 'php-package-name':
 # 		ensure  => $package
 # 	}
