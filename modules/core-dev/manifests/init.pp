@@ -27,6 +27,18 @@ class core-dev (
 		ensure => 'present',
 	}
 
+	# Instruct Chassis checkout to wordpress-develop folder.
+	exec { 'git_exclude_exists':
+		command => '/bin/false',
+		unless => '/usr/bin/test -e /vagrant/.git/info/exclude',
+	}
+
+	file_line { 'ignore wordpress-develop directory':
+		path => '/vagrant/.git/info/exclude',
+		line => 'wordpress-develop',
+		require => Exec['git_exclude_exists']
+	}
+
 	# package { 'php-package-name':
 	# 	ensure  => $package
 	# }
