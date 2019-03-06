@@ -11,6 +11,6 @@ version: 2
 dependencies:
   - composer
   - grunt
-  - kadamwhite/phpunit
+  - kadamwhite/phpunit # TODO: update once extension moves to Chassis org.
   - nodejs
   - npm
