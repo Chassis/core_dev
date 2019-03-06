@@ -6,7 +6,11 @@
 # Values: 2
 version: 2
 
+# Chassis extension dependencies. Any unprefixed dependency is assumed to be
+# a repository within the Chassis GitHub organization.
 dependencies:
   - composer
-  - npm
   - grunt
+  - kadamwhite/phpunit # TODO: update once extension moves to Chassis org.
+  - nodejs
+  - npm

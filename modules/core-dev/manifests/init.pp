@@ -1,60 +1,39 @@
-# Example Puppet class!
-#
-# Chassis automatically loads your class, and passes $config in, which is an
-# array representing the YAML-based configuration. You can use this to access
-# Chassis configuration, or your own custom keys. In this demo, we've used
-# `show_example`. To test it out, add the following to your config:
-#
-#     show_example: hello!
-#
-# The entirety of your behaviour should be wrapped inside this class.
-#
-# ***********************************
-#          IMPORTANT NOTES:
-#
-# * Your module directory must be named the same as the extension.
-# * Your class must be in init.pp, and named the same as the extension.
-#
-# ***********************************
-
+# Class to prepare the Chassis box for WP core development.
 class core-dev (
 	$config
 ) {
-	# Create vagrant-core.local
-	chassis::site { 'vagrant-core.local':
-		location          => '/vagrant/wordpress-develop/src',
-		wpdir             => '/vagrant/wordpress-develop/src',
-		contentdir        => '/vagrant/wordpress-develop/src/wp-content',
-		hosts             => ['vagrant-core.local'],
-		database          => 'vagrantcore_local',
-		database_user     => $config[database][user],
-		database_password => $config[database][password],
-		admin_user        => $config[admin][user],
-		admin_email       => $config[admin][email],
-		admin_password    => $config[admin][password],
-		sitename          => $config[site][name],
-		require => [
-			Class['chassis::php'],
-			Package['git-core'],
-			Class['mysql::server'],
-		]
+	# # Create vagrant-core.local
+	# chassis::site { 'vagrant-core.local':
+	# 	location          => '/vagrant/wordpress-develop/src',
+	# 	wpdir             => '/vagrant/wordpress-develop/src',
+	# 	contentdir        => '/vagrant/wordpress-develop/src/wp-content',
+	# 	hosts             => ['vagrant-core.local'],
+	# 	database          => 'vagrantcore_local',
+	# 	database_user     => $config[database][user],
+	# 	database_password => $config[database][password],
+	# 	admin_user        => $config[admin][user],
+	# 	admin_email       => $config[admin][email],
+	# 	admin_password    => $config[admin][password],
+	# 	sitename          => $config[site][name],
+	# 	require => [
+	# 		Class['chassis::php'],
+	# 		Package['git-core'],
+	# 		Class['mysql::server'],
+	# 	]
+	# }
+
+	# Ensure SVN is installed.
+	package { 'subversion':
+		ensure => 'present',
 	}
-# This is an example of how you can use disabled_extensions in the yaml files to add or remove packages.
-# 	if ( ! empty( $config[disabled_extensions] ) and 'chassis/example' in $config[disabled_extensions] ) {
-# 		$package = absent
-# 		$file    = absent
-# 	} else {
-# 		$package = latest
-# 		$file    = present
-# 	}
-#
-# 	package { 'php-package-name':
-# 		ensure  => $package
-# 	}
-#
-# 	file { '/tmp/randomfile.ini':
-# 		ensure => $file,
-# 		content => '# Example content',
-# 		force  => true
-# 	}
+
+	# package { 'php-package-name':
+	# 	ensure  => $package
+	# }
+
+	# file { '/tmp/randomfile.ini':
+	# 	ensure => $file,
+	# 	content => '# Example content',
+	# 	force  => true
+	# }
 }
