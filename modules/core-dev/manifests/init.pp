@@ -1,5 +1,3 @@
-include vcsrepo
-
 # Class to prepare the Chassis box for WP core development.
 class core-dev (
 	$config
