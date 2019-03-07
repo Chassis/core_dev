@@ -51,6 +51,13 @@ class core-dev (
 		require => Exec['maybe_checkout_wp_develop']
 	}
 
+	# Create wp-config.php
+	file { '/vagrant/wordpress-develop/wp-config.php':
+		ensure  => $file,
+		mode    => '0644',
+		content => template('core-dev/wp-config.php.erb')
+	}
+
 	# package { 'php-package-name':
 	# 	ensure  => $package
 	# }
