@@ -44,6 +44,13 @@ class core-dev (
 		creates => '/vagrant/wordpress-develop'
 	}
 
+	exec { 'maybe_create_build_directory':
+		# Ensure directory exists for nginx but developers must run grunt build.
+		command => '/bin/mkdir -p /vagrant/wordpress-develop/build',
+		creates => '/vagrant/wordpress-develop/build',
+		require => Exec['maybe_checkout_wp_develop']
+	}
+
 	# package { 'php-package-name':
 	# 	ensure  => $package
 	# }
