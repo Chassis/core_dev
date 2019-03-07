@@ -39,6 +39,11 @@ class core-dev (
 		require => Exec['git_exclude_exists']
 	}
 
+	exec { 'maybe_checkout_wp_develop':
+		command => '/usr/bin/git clone git://develop.git.wordpress.org/ /vagrant/wordpress-develop',
+		creates => '/vagrant/wordpress-develop'
+	}
+
 	# package { 'php-package-name':
 	# 	ensure  => $package
 	# }
