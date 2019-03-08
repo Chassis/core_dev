@@ -1,5 +1,40 @@
-# wordpress-core-development
-A Chassis extension for WordPress Core development.
+# WordPress Core Development Extension for Chassis
+
+This extension configures a [Chassis](http://chassis.io) virtual machine for WordPress core development.
+
+## Quick Start
+
+Clone Chassis into the directory of your choice with this command:
+
+```bash
+# You may change core-dev-vm to the folder name of your choice.
+git clone --recursive https://github.com/Chassis/Chassis core-dev-vm
+```
+
+Then, create a basic Chassis `config.local.yaml` file in the root of the Chassis checkout, and paste in these options:
+
+```yaml
+# Specify the .local hostname of your choice.
+host:
+  - core.local
+
+# Instruct Chassis to use this extension.
+extensions:
+    - peterwilsoncc/core-dev
+
+# Run in multisite mode (totally optional)
+multisite: false
+
+```
+
+After creating this file, run `vagrant up` to initialize the virtual machine.
+
+Once provisioned, your new WordPress development sites will be available at (using the example hostname above),
+
+- [core.local/src](http://core.local/src): The `src` folder of the WordPress development repository checkout.
+- [core.local/build](http://core.local/src): The `build` folder of the WordPress development repository checkout.
+
+The default username and password for each site is `admin` / `password`, and by default the sites will share a database.
 
 ## Extension Options
 
