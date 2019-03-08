@@ -22,21 +22,15 @@ class core-dev (
 	# 	]
 	# }
 
-	# Ensure SVN is installed.
-	package { 'subversion':
-		ensure => 'present',
+	class { 'core-dev::repository':
+		config => $config,
 	}
 
-	# Instruct Chassis checkout to wordpress-develop folder.
-	exec { 'git_exclude_exists':
-		command => '/bin/false',
-		unless => '/usr/bin/test -e /vagrant/.git/info/exclude',
-	}
-
-	file_line { 'ignore wordpress-develop directory':
-		path => '/vagrant/.git/info/exclude',
-		line => 'wordpress-develop',
-		require => Exec['git_exclude_exists']
+	# Once the repository exists, ensure the build directory is present
+	# for use as an Nginx site root.
+	file { '/vagrant/wordpress-develop/build':
+		ensure  => 'directory',
+		require => Class['core-dev::repository'],
 	}
 
 	# package { 'php-package-name':
