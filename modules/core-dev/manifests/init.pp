@@ -2,44 +2,39 @@
 class core-dev (
 	$config
 ) {
-	# # Create vagrant-core.local
-	# chassis::site { 'vagrant-core.local':
-	# 	location          => '/vagrant/wordpress-develop/src',
-	# 	wpdir             => '/vagrant/wordpress-develop/src',
-	# 	contentdir        => '/vagrant/wordpress-develop/src/wp-content',
-	# 	hosts             => ['vagrant-core.local'],
-	# 	database          => 'vagrantcore_local',
-	# 	database_user     => $config[database][user],
-	# 	database_password => $config[database][password],
-	# 	admin_user        => $config[admin][user],
-	# 	admin_email       => $config[admin][email],
-	# 	admin_password    => $config[admin][password],
-	# 	sitename          => $config[site][name],
-	# 	require => [
-	# 		Class['chassis::php'],
-	# 		Package['git-core'],
-	# 		Class['mysql::server'],
-	# 	]
-	# }
-
 	class { 'core-dev::repository':
 		config => $config,
 	}
 
-	# Once the repository exists, ensure the build directory is present
-	# for use as an Nginx site root.
-	file { '/vagrant/wordpress-develop/build':
-		ensure  => 'directory',
-		require => Class['core-dev::repository'],
+	class { 'core-dev::build':
+		require => [
+			Class['core-dev::repository'],
+			Class['grunt'],
+			Class['npm'],
+		],
 	}
 
-	# package { 'php-package-name':
-	# 	ensure  => $package
-	# }
+	core-dev::site { "${ config['hosts'][0] }/src":
+		sitename          => 'WordPress Develop (source)',
+		location          => '/vagrant/wordpress-develop/src',
+		database          => "${ config[database][name] }_src",
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		admin_user        => $config[admin][user],
+		admin_email       => $config[admin][email],
+		admin_password    => $config[admin][password],
+	}
 
-	# file { '/tmp/randomfile.ini':
-	# 	ensure => $file,
-	# 	content => '# Example content',
-	# 	force  => true
-	# }
+	core-dev::site { "${ config['hosts'][0] }/build":
+		sitename          => 'WordPress Develop (build)',
+		location          => '/vagrant/wordpress-develop/build',
+		database          => "${ config[database][name] }_build",
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		admin_user        => $config[admin][user],
+		admin_email       => $config[admin][email],
+		admin_password    => $config[admin][password],
+		# Build task must complete before /build site can be registered.
+		require => Class['core-dev::build'],
+	}
 }
