@@ -6,35 +6,54 @@ class core-dev (
 		config => $config,
 	}
 
-	class { 'core-dev::build':
-		require => [
-			Class['core-dev::repository'],
-			Class['grunt'],
-			Class['npm'],
-		],
+	exec { 'upgrade npm':
+		command => '/usr/bin/npm install -g npm',
+		user    => 'root',
+		require => Class['npm'],
+	}
+
+	exec { 'npm install':
+		command => '/usr/bin/npm install',
+		cwd     => '/vagrant/wordpress-develop',
+		user    => 'vagrant',
+		require => Exec['upgrade npm'],
+	}
+
+	core-dev::build { 'src':
+		grunt_command => 'build --dev',
+		require       => Exec['npm install'],
+	}
+
+	core-dev::build { 'build':
+		grunt_command => 'build',
+		require       => Exec['npm install'],
 	}
 
 	core-dev::site { "${ config['hosts'][0] }/src":
 		sitename          => 'WordPress Develop (source)',
 		location          => '/vagrant/wordpress-develop/src',
 		database          => "${ config[database][name] }_src",
+		# database          => config[database][name],
 		database_user     => $config[database][user],
 		database_password => $config[database][password],
 		admin_user        => $config[admin][user],
 		admin_email       => $config[admin][email],
 		admin_password    => $config[admin][password],
+
+		require           => Core-dev::Build['src'],
 	}
 
 	core-dev::site { "${ config['hosts'][0] }/build":
 		sitename          => 'WordPress Develop (build)',
 		location          => '/vagrant/wordpress-develop/build',
 		database          => "${ config[database][name] }_build",
+		# database          => config[database][name],
 		database_user     => $config[database][user],
 		database_password => $config[database][password],
 		admin_user        => $config[admin][user],
 		admin_email       => $config[admin][email],
 		admin_password    => $config[admin][password],
-		# Build task must complete before /build site can be registered.
-		require => Class['core-dev::build'],
+
+		require           => Core-dev::Build['build'],
 	}
 }

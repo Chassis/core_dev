@@ -26,7 +26,16 @@ define( 'DB_HOST', 'localhost' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 
-$table_prefix = 'wp_';
+/*
+<%= @name %>
+<%= @sitename %>
+<%= @location %>
+<%= @admin_email %>
+<%= @admin_user %>
+<%= @admin_password %>
+*/
+
+$table_prefix = '<%= @database_prefix %>';
 
 // =====================================
 // Errors

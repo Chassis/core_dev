@@ -1,15 +1,17 @@
 # Install and configure our WordPress site.
 define core-dev::site (
+	$location,
+	$sitename,
+
 	$database,
-	$database_user = 'root',
-	$database_password = 'password',
+	$database_user = 'wordpress',
+	$database_password = 'vagrantpassword',
 	$database_host = 'localhost',
+	$database_prefix = 'wp_',
+
 	$admin_user,
 	$admin_email,
 	$admin_password,
-
-	$location,
-	$sitename,
 ) {
 	mysql::db { $database:
 		user     => $database_user,
@@ -29,9 +31,9 @@ define core-dev::site (
 		admin_user     => $admin_user,
 		admin_email    => $admin_email,
 		admin_password => $admin_password,
-		require => [
-			Class['chassis::php'],
+		require        => [
+			File["${ location }/wp-config.php"],
 			Mysql::Db[$database],
-		]
+		],
 	}
 }

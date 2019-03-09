@@ -1,40 +1,20 @@
 # Class to install dependencies and build WordPress into `/src` and `/build`.
-class core-dev::build () {
-	exec { 'npm install':
-		command => '/usr/bin/npm install',
+define core-dev::build (
+	$grunt_command,
+) {
+	# Run grunt to build the project.
+	exec { "grunt ${ grunt_command }":
+		command => "/usr/bin/grunt ${ grunt_command }",
 		cwd     => '/vagrant/wordpress-develop',
 		user    => 'vagrant',
-	}
-
-	# Run grunt to build the project into /vagrant/wordpress-develop/build.
-	exec { 'grunt build':
-		command => '/usr/bin/grunt build',
-		cwd     => '/vagrant/wordpress-develop',
-		user    => 'vagrant',
-		require => Exec['npm install'],
-	}
-
-	# Run grunt to build the project in situ within /vagrant/wordpress-develop/src.
-	exec { 'grunt build --dev':
-		command => '/usr/bin/grunt build --dev',
-		cwd     => '/vagrant/wordpress-develop',
-		user    => 'vagrant',
-		require => Exec['npm install'],
+		require => Class['grunt'],
 	}
 
 	# Symlink /build into the nginx root.
-	file { '/vagrant/build':
+	file { "/vagrant/${ name }/":
 		ensure => link,
-		target => '/vagrant/wordpress-develop/build',
+		target => "/vagrant/wordpress-develop/${ name }",
 		notify => Service['nginx'],
-		require => Exec['grunt build'],
-	}
-
-	# Symlink /src into the nginx root.
-	file { '/vagrant/src':
-		ensure => link,
-		target => '/vagrant/wordpress-develop/src',
-		notify => Service['nginx'],
-		require => Exec['grunt build --dev'],
+		require => Exec[ "grunt ${ grunt_command }" ],
 	}
 }
