@@ -9,17 +9,12 @@ class core-dev::repository (
 		ensure => 'present',
 	}
 
-	# Validate a .git/info/exclude file exists for the Chassis checkout.
-	exec { 'git_exclude_exists':
-		command => '/bin/false',
-		unless  => '/usr/bin/test -e /vagrant/.git/info/exclude',
-	}
-
 	# Ignore wordpress-develop folder within the parent Chassis checkout.
-	file_line { 'ignore wordpress-develop directory':
-		path    => '/vagrant/.git/info/exclude',
-		line    => 'wordpress-develop',
-		require => Exec['git_exclude_exists'],
+	if $::parent_repository_exclude_file == 'present' {
+		file_line { 'ignore wordpress-develop directory':
+			path    => '/vagrant/.git/info/exclude',
+			line    => 'wordpress-develop',
+		}
 	}
 
 	# Ensure the repository destination directory exists.
@@ -30,32 +25,33 @@ class core-dev::repository (
 	# vcsrepo task may fail unless GitHub is listed in known_hosts.
 	exec { 'Add github to known_hosts':
 		command => '/usr/bin/ssh-keyscan -t rsa github.com >> /home/vagrant/.ssh/known_hosts',
-		unless  => '/bin/grep -Fxq "github.com" /home/vagrant/.ssh/known_hosts',
+		unless  => '/bin/grep -Fq "github.com" /home/vagrant/.ssh/known_hosts',
 	}
 
-	# Test whether a checkout already exists in the target location.
-	exec { 'wp_dev_checkout_missing':
-		command => '/bin/true',
-		unless  => '/usr/bin/test -f /vagrant/wordpress-develop/package.json',
-	}
-
-	# Permit a develop repo mirror remote to be specified in config.local.yaml.
-	if ( !empty($config['core-dev']) and !empty($config['core-dev']['mirror']) ) {
-		$repository_remotes = {
-			'origin' => 'git://develop.git.wordpress.org/',
-			'mirror' => $config['core-dev']['mirror']
+	# A repository may exist in the Chassis root, or a repository directory
+	# elsewhere on the host system may be mapped into the wordpress-develop
+	# directory using synced_folders. Once a repository is present, we cannot
+	# make as many assumptions about how the user wishes to manage that repo;
+	# They may be using SVN, or have defined their own remotes, etcetera.
+	# We therefore only try to clone and setup a repository if there is not
+	# already a checkout of any sort in `/vagrant/wordpress-develop`.
+	unless $::core_dev_repository == present {
+		# Permit a develop repo mirror remote to be specified in config.local.yaml.
+		if ( !empty($config['core-dev']) and !empty($config['core-dev']['mirror']) ) {
+			$repository_remotes = {
+				'origin' => 'git://develop.git.wordpress.org/',
+				'mirror' => $config['core-dev']['mirror']
+			}
+		} else {
+			$repository_remotes = { 'origin' => 'git://develop.git.wordpress.org/' }
 		}
-	} else {
-		$repository_remotes = { 'origin' => 'git://develop.git.wordpress.org/' }
-	}
 
-	# Otherwise, if no repo is present, check out the repository and set up remotes.
-	vcsrepo { '/vagrant/wordpress-develop':
-		ensure   => present,
-		provider => git,
-		remote   => 'origin',
-		source   => $repository_remotes,
-		user     => 'vagrant',
-		require  => Exec['wp_dev_checkout_missing'],
+		vcsrepo { '/vagrant/wordpress-develop':
+			ensure   => present,
+			provider => git,
+			remote   => 'origin',
+			source   => $repository_remotes,
+			user     => 'vagrant',
+		}
 	}
 }

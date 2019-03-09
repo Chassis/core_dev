@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+[ -f /vagrant/.git/info/exclude ] && echo "parent_repository_exclude_file=present" || echo "parent_repository_exclude_file=absent"
