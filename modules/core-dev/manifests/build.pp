@@ -4,7 +4,6 @@ class core-dev::build () {
 		command => '/usr/bin/npm install',
 		cwd     => '/vagrant/wordpress-develop',
 		user    => 'vagrant',
-		creates => '/vagrant/wordpress-develop/package-lock.json',
 	}
 
 	# Run grunt to build the project into /vagrant/wordpress-develop/build.
