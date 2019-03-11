@@ -1,6 +1,6 @@
 include vcsrepo
 
-define core-dev::tests (
+class core-dev::tests (
 	$database = 'wordpress_tests',
 	$database_user = 'wordpress',
 	$database_password = 'vagrantpassword',
@@ -22,18 +22,11 @@ define core-dev::tests (
 		content => template('core-dev/wp-tests-config.php.erb'),
 	}
 
-	# See
+	# See https://make.wordpress.org/core/handbook/contribute/git/#unit-tests
 	vcsrepo { '/vagrant/wordpress-develop/tests/phpunit/data/plugins/wordpress-importer':
 		ensure   => present,
 		provider => svn,
 		source   => 'https://plugins.svn.wordpress.org/wordpress-importer/trunk/',
 		user     => 'vagrant',
 	}
-
-	# wp::plugin { 'wordpress-importer':
-	# 	# Necessary for the tests to pass but need not be installed
-	# 	ensure   => installed,
-	# 	location => '/vagrant/wordpress-develop/src',
-	# 	require  => Class['wp'],
-	# }
 }

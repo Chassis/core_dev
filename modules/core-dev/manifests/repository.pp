@@ -15,11 +15,14 @@ class core-dev::repository (
 			path    => '/vagrant/.git/info/exclude',
 			line    => 'wordpress-develop',
 		}
-	}
-
-	# Ensure the repository destination directory exists.
-	file { '/vagrant/wordpress-develop':
-		ensure => 'directory',
+		file_line { 'ignore src/ symlink':
+			path    => '/vagrant/.git/info/exclude',
+			line    => 'src',
+		}
+		file_line { 'ignore build/ symlink':
+			path    => '/vagrant/.git/info/exclude',
+			line    => 'build',
+		}
 	}
 
 	# vcsrepo task may fail unless GitHub is listed in known_hosts.
