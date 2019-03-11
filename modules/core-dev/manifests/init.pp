@@ -6,6 +6,15 @@ class core-dev (
 		config => $config,
 	}
 
+	core-dev::tests { 'prepare unit test environment':
+		database          => "${ config[database][name] }_tests",
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		database_host     => 'localhost',
+		database_prefix   => 'wptests_',
+		require           => Class['core-dev::repository'],
+	}
+
 	exec { 'upgrade npm':
 		command => '/usr/bin/npm install -g npm',
 		user    => 'root',
