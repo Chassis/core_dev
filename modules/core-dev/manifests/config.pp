@@ -1,7 +1,7 @@
 class core-dev::config {
 	# Configure Chassis' wp-config.php per the WP Core Development guide:
 	# http://docs.chassis.io/en/latest/guides/#wordpress-core-development
-	file_line { 'ignore wordpress-develop directory':
+	file_line { 'adjust chassis wp-config.php':
 		path  => '/vagrant/wp-config.php',
 		line  => "if ( ! defined( 'WP_CLI' ) ) require_once( ABSPATH . 'wp-settings.php' );",
 		match => 'require_once.*ABSPATH.*wp-settings.php',
