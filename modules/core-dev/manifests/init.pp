@@ -6,10 +6,10 @@ class core-dev (
 		config => $config,
 	}
 
-	# file { '/vagrant/wordpress-develop/src/wp-config.php':
-	# 	content => template('core-dev/wp-config.php.erb'),
-	# 	require => Class['core-dev::repository'],
-	# }
+	file { '/vagrant/wordpress-develop/src/wp-config.php':
+		content => template('core-dev/wp-config.php.erb'),
+		require => Class['core-dev::repository'],
+	}
 
 	class { 'core-dev::tests':
 		database          => "${ config[database][name] }_tests",

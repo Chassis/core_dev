@@ -37,7 +37,7 @@ class core-dev::build {
 			Class['grunt'],
 			Exec['npm install'],
 			# # Ensure the templated config gets copied.
-			# File['/vagrant/wordpress-develop/src/wp-config.php'],
+			File['/vagrant/wordpress-develop/src/wp-config.php'],
 		],
 		creates => '/vagrant/wordpress-develop/src/wp-includes/js',
 	}
