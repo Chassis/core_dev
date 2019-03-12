@@ -30,10 +30,8 @@ paths:
 extensions:
   - peterwilsoncc/core-dev
 
-# Run in multisite mode (totally optional)
-multisite: false
-
 ```
+(Other [Chassis configuration options](http://docs.chassis.io/en/latest/config/) may be used as normal, so long as the above paths are provided correctly.)
 
 After creating this file, run `vagrant up` to initialize the virtual machine.
 
