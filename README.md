@@ -55,11 +55,34 @@ core-dev:
 
 You may already have `wordpress-develop` checkout out locally using `git` or `svn`. You may choose to use this repository within your VM instead of cloning a fresh copy by mapping the directory into your virtual machine using `synced_folders`.
 
-As an example, imagine that you have your Chassis box checked out in `~/core-vm`, and your WordPress development repository checked out in `~/wp-develop`. In your `config.local.yaml` file inside the Chassis directory, tell Chassis to sync the folder `../wp-develop` into the VM as `/vagrant/wordpress-develop`.
+As an example, imagine that you have your Chassis box checked out in `~/core-vm`, and your WordPress development repository checked out in `~/wordpress-develop`. In your `config.local.yaml` file inside the Chassis directory, tell Chassis to sync the folder `../wordpress-develop` into the VM as `/vagrant/wordpress-develop`.
 
 ```yml
-# config.local.yaml
+hosts:
+  - core.local
+
+paths:
+  # Use the normal Chassis directory structure,
+  content: content
+  base: .
+  # Except use your checkout for the WordPress directory. To switch
+  # between /src and /build, edit this line then run `vagrant provision`.
+  wp: ../wordpress-develop/src
 
 synced_folders:
-    ../wp-develop: /vagrant/wordpress-develop
+  # This will allow you to run the WP unit tests against your existing
+  # wordpress-develop repository checkout.
+  ../wordpress-develop: /vagrant/wordpress-develop
+
+extensions:
+  - peterwilsoncc/core-dev
+
+```
+
+## Run Unit Tests
+
+From the host machine, use `vagrant ssh` to run the unit tests inside the virtual machine:
+
+```bash
+vagrant ssh -c 'cd /vagrant/wordpress-develop && phpunit'
 ```
