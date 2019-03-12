@@ -6,8 +6,7 @@ class core-dev (
 		config => $config,
 	}
 
-	file { '/vagrant/wordpress-develop/src/wp-config.php':
-		content => template('core-dev/wp-config.php.erb'),
+	class { 'core-dev::config':
 		require => Class['core-dev::repository'],
 	}
 
@@ -20,7 +19,10 @@ class core-dev (
 		require           => Class['core-dev::repository'],
 	}
 
-	class { 'core-dev::build': }
+	class { 'core-dev::build':
+		# # Ensure the templated config gets copied.
+		require => File['/vagrant/wordpress-develop/src/wp-config.php'],
+	}
 
 	# Symlink /build and /src into the nginx root.
 	# (Overrides `puppet/modules/chassis/manifests/site.pp`)
