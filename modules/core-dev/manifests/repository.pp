@@ -12,16 +12,16 @@ class core-dev::repository (
 	# Ignore wordpress-develop folder within the parent Chassis checkout.
 	if $::parent_repository_exclude_file == 'present' {
 		file_line { 'ignore wordpress-develop directory':
-			path    => '/vagrant/.git/info/exclude',
-			line    => 'wordpress-develop',
+			path => '/vagrant/.git/info/exclude',
+			line => 'wordpress-develop',
 		}
 		file_line { 'ignore src/ symlink':
-			path    => '/vagrant/.git/info/exclude',
-			line    => 'src',
+			path => '/vagrant/.git/info/exclude',
+			line => 'src',
 		}
 		file_line { 'ignore build/ symlink':
-			path    => '/vagrant/.git/info/exclude',
-			line    => 'build',
+			path => '/vagrant/.git/info/exclude',
+			line => 'build',
 		}
 	}
 
