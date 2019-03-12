@@ -11,16 +11,24 @@ Clone Chassis into the directory of your choice with this command:
 git clone --recursive https://github.com/Chassis/Chassis core-dev-vm
 ```
 
-Then, create a basic Chassis `config.local.yaml` file in the root of the Chassis checkout, and paste in these options:
+Next, create an empty `config.local.yaml` file in the root of the Chassis checkout, and paste in these options:
 
 ```yaml
 # Specify the .local hostname of your choice.
 host:
   - core.local
 
+paths:
+  # Use Chassis paths as normal,
+  content: content
+  base: .
+  # Except use your checkout for the WordPress directory. To switch
+  # between /src and /build, edit this line then run `vagrant provision`.
+  wp: wordpress-develop/src
+
 # Instruct Chassis to use this extension.
 extensions:
-    - peterwilsoncc/core-dev
+  - peterwilsoncc/core-dev
 
 # Run in multisite mode (totally optional)
 multisite: false
@@ -29,27 +37,15 @@ multisite: false
 
 After creating this file, run `vagrant up` to initialize the virtual machine.
 
-Once provisioned, your new WordPress development sites will be available at (using the example hostname above),
+Once provisioned, your new WordPress development site will be available at [core.local](http://core.local), and you may login at [core.local/wp](http://core.local/wp) with the username `admin` and password `password`. The site will be using the `/src` build of the `wordpress-develop` repository, newly cloned on your host system at `[Chassis root]/wordpress-develop` and available as `/vagrant/wordpress-develop` inside the virtual machine.
 
-- [core.local/src](http://core.local/src): The `src` folder of the WordPress development repository checkout.
-- [core.local/build](http://core.local/src): The `build` folder of the WordPress development repository checkout.
+To switch the site to use the **`build`** version of the site instead, edit the `wp:` line in your `config.local.yaml` to end in "build" instead of "src" then run `vagrant provision`.
 
-The default username and password for each site is `admin` / `password`, and by default the sites will share a database.
+### A Note on the WordPress Build Process
 
-## Extension Options
+**PLEASE NOTE:** The provisioner will run `npm install` and `grunt` for you after cloning the repository, so you can get started right away. However, subsequent `npm` or `grunt` commands are left to you, the developer. If you have made changes to the code and are using the `/src` directory, run `grunt build --dev` to rebuild the project into the `/src` directory if you do not see your changes. If you are using `/src`, run `grunt` or `grunt build`. See the [WordPress core contributor handbook](https://make.wordpress.org/core/handbook/) for more information on building & developing WordPress.
 
-Define a `core-dev` key in your `config.local.yaml` to configure this extension.
-
-```yml
-# config.local.yaml
-
-core-dev:
-    # If the wordpress-develop repo is not already checked out within the
-    # Chassis root directory, this extension will clone a fresh copy for
-    # you. To add a "mirror" remote pointing to your own fork of the develop
-    # repo, specify your fork's address in the `mirror` option.
-    mirror: git@github.com:{your GitHub name}/wordpress-develop.git
-```
+(Commands may be run either within the Chassis VM — _e.g._ `vagrant ssh -c 'cd /vagrant/wordpress-develop && grunt build --dev` — or else you may run `npm install` within your host operating system and run the builds with `grunt` locally on your machine. Builds may be faster on the host system than within the VM, but using the VM's versions of Node and Grunt means you need less tooling installed outside Chassis.)
 
 ## Use An Existing WordPress Checkout
 
@@ -79,10 +75,31 @@ extensions:
 
 ```
 
-## Run Unit Tests
+## Running the Unit Tests
 
 From the host machine, use `vagrant ssh` to run the unit tests inside the virtual machine:
 
 ```bash
 vagrant ssh -c 'cd /vagrant/wordpress-develop && phpunit'
+```
+
+To run a particular suite of tests, for example just the tests defined within the `WP_Test_REST_Posts_Controller` class, provide that class name with `--filter`:
+
+```bash
+vagrant ssh -c 'cd /vagrant/wordpress-develop && phpunit --filter WP_Test_REST_Posts_Controller'
+```
+
+## Extension Options
+
+Define a `core-dev` key in your `config.local.yaml` to configure this extension.
+
+```yml
+# config.local.yaml
+
+core-dev:
+    # If the wordpress-develop repo is not already checked out within the
+    # Chassis root directory, this extension will clone a fresh copy for
+    # you. To add a "mirror" remote pointing to your own fork of the develop
+    # repo, specify your fork's address in the `mirror` option.
+    mirror: git@github.com:{your GitHub name}/wordpress-develop.git
 ```
