@@ -20,56 +20,6 @@ class core-dev (
 	}
 
 	class { 'core-dev::build':
-		# # Ensure the templated config gets copied.
-		require => File['/vagrant/wordpress-develop/src/wp-config.php'],
+		require => Class['core-dev::config'],
 	}
-
-	# Symlink /build and /src into the nginx root.
-	# (Overrides `puppet/modules/chassis/manifests/site.pp`)
-	File<|title == '/vagrant/src'|> {
-		ensure => link,
-		target => '/vagrant/wordpress-develop/src',
-	}
-	File<|title == '/vagrant/build'|> {
-		ensure => link,
-		target => '/vagrant/wordpress-develop/build',
-	}
-
-	# core-dev::build { 'src':
-	# 	grunt_command => 'build --dev',
-	# 	require       => Exec['npm install'],
-	# }
-
-	# core-dev::build { 'build':
-	# 	grunt_command => 'build',
-	# 	require       => Exec['npm install'],
-	# }
-
-	# core-dev::site { "${ config['hosts'][0] }/src":
-	# 	sitename          => 'WordPress Develop (source)',
-	# 	location          => '/vagrant/wordpress-develop/src',
-	# 	database          => "${ config[database][name] }_src",
-	# 	# database          => config[database][name],
-	# 	database_user     => $config[database][user],
-	# 	database_password => $config[database][password],
-	# 	admin_user        => $config[admin][user],
-	# 	admin_email       => $config[admin][email],
-	# 	admin_password    => $config[admin][password],
-
-	# 	require           => Core-dev::Build['src'],
-	# }
-
-	# core-dev::site { "${ config['hosts'][0] }/build":
-	# 	sitename          => 'WordPress Develop (build)',
-	# 	location          => '/vagrant/wordpress-develop/build',
-	# 	database          => "${ config[database][name] }_build",
-	# 	# database          => config[database][name],
-	# 	database_user     => $config[database][user],
-	# 	database_password => $config[database][password],
-	# 	admin_user        => $config[admin][user],
-	# 	admin_email       => $config[admin][email],
-	# 	admin_password    => $config[admin][password],
-
-	# 	require           => Core-dev::Build['build'],
-	# }
 }
