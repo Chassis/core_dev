@@ -1,0 +1,61 @@
+<?php
+// ===================================================
+// Load database info and local development parameters
+// ===================================================
+$chassisdir = '/vagrant';
+
+if ( file_exists( $chassisdir . '/local-config.php' ) ) {
+	define( 'WP_LOCAL_DEV', true );
+	include( $chassisdir . '/local-config.php' );
+}
+
+// =======================
+// Load Chassis extensions
+// =======================
+if ( file_exists( $chassisdir . '/local-config-extensions.php' ) ) {
+	include( $chassisdir . '/local-config-extensions.php' );
+}
+
+// ==================
+// Configure Database
+// ==================
+define( 'DB_NAME', '<%= @database %>' );
+define( 'DB_USER', '<%= @database_user %>' );
+define( 'DB_PASSWORD', '<%= @database_password %>' );
+define( 'DB_HOST', 'localhost' );
+define( 'DB_CHARSET', 'utf8' );
+define( 'DB_COLLATE', '' );
+
+/*
+<%= @name %>
+<%= @sitename %>
+<%= @location %>
+<%= @admin_email %>
+<%= @admin_user %>
+<%= @admin_password %>
+*/
+
+$table_prefix = '<%= @database_prefix %>';
+
+// =====================================
+// Errors
+// Show/hide errors for local/production
+// =====================================
+if ( WP_LOCAL_DEV ) {
+	defined( 'WP_DEBUG' ) or define( 'WP_DEBUG', true );
+}
+// Only override if not already set
+elseif ( ! defined( 'WP_DEBUG_DISPLAY' ) ) {
+	ini_set( 'display_errors', 0 );
+	define( 'WP_DEBUG_DISPLAY', false );
+}
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once( ABSPATH . 'wp-settings.php' );

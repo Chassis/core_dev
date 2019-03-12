@@ -2,44 +2,67 @@
 class core-dev (
 	$config
 ) {
-	# # Create vagrant-core.local
-	# chassis::site { 'vagrant-core.local':
-	# 	location          => '/vagrant/wordpress-develop/src',
-	# 	wpdir             => '/vagrant/wordpress-develop/src',
-	# 	contentdir        => '/vagrant/wordpress-develop/src/wp-content',
-	# 	hosts             => ['vagrant-core.local'],
-	# 	database          => 'vagrantcore_local',
-	# 	database_user     => $config[database][user],
-	# 	database_password => $config[database][password],
-	# 	admin_user        => $config[admin][user],
-	# 	admin_email       => $config[admin][email],
-	# 	admin_password    => $config[admin][password],
-	# 	sitename          => $config[site][name],
-	# 	require => [
-	# 		Class['chassis::php'],
-	# 		Package['git-core'],
-	# 		Class['mysql::server'],
-	# 	]
-	# }
-
 	class { 'core-dev::repository':
 		config => $config,
 	}
 
-	# Once the repository exists, ensure the build directory is present
-	# for use as an Nginx site root.
-	file { '/vagrant/wordpress-develop/build':
-		ensure  => 'directory',
-		require => Class['core-dev::repository'],
+	core-dev::tests { 'prepare unit test environment':
+		database          => "${ config[database][name] }_tests",
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		database_host     => 'localhost',
+		database_prefix   => 'wptests_',
+		require           => Class['core-dev::repository'],
 	}
 
-	# package { 'php-package-name':
-	# 	ensure  => $package
-	# }
+	exec { 'upgrade npm':
+		command => '/usr/bin/npm install -g npm',
+		user    => 'root',
+		require => Class['npm'],
+	}
 
-	# file { '/tmp/randomfile.ini':
-	# 	ensure => $file,
-	# 	content => '# Example content',
-	# 	force  => true
-	# }
+	exec { 'npm install':
+		command => '/usr/bin/npm install',
+		cwd     => '/vagrant/wordpress-develop',
+		user    => 'vagrant',
+		require => Exec['upgrade npm'],
+	}
+
+	core-dev::build { 'src':
+		grunt_command => 'build --dev',
+		require       => Exec['npm install'],
+	}
+
+	core-dev::build { 'build':
+		grunt_command => 'build',
+		require       => Exec['npm install'],
+	}
+
+	core-dev::site { "${ config['hosts'][0] }/src":
+		sitename          => 'WordPress Develop (source)',
+		location          => '/vagrant/wordpress-develop/src',
+		database          => "${ config[database][name] }_src",
+		# database          => config[database][name],
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		admin_user        => $config[admin][user],
+		admin_email       => $config[admin][email],
+		admin_password    => $config[admin][password],
+
+		require           => Core-dev::Build['src'],
+	}
+
+	core-dev::site { "${ config['hosts'][0] }/build":
+		sitename          => 'WordPress Develop (build)',
+		location          => '/vagrant/wordpress-develop/build',
+		database          => "${ config[database][name] }_build",
+		# database          => config[database][name],
+		database_user     => $config[database][user],
+		database_password => $config[database][password],
+		admin_user        => $config[admin][user],
+		admin_email       => $config[admin][email],
+		admin_password    => $config[admin][password],
+
+		require           => Core-dev::Build['build'],
+	}
 }
