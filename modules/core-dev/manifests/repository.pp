@@ -12,14 +12,17 @@ class core-dev::repository (
 	# Ignore wordpress-develop folder within the parent Chassis checkout.
 	if $::parent_repository_exclude_file == 'present' {
 		file_line { 'ignore wordpress-develop directory':
-			path    => '/vagrant/.git/info/exclude',
-			line    => 'wordpress-develop',
+			path => '/vagrant/.git/info/exclude',
+			line => 'wordpress-develop',
 		}
-	}
-
-	# Ensure the repository destination directory exists.
-	file { '/vagrant/wordpress-develop':
-		ensure => 'directory',
+		file_line { 'ignore src/ symlink':
+			path => '/vagrant/.git/info/exclude',
+			line => 'src',
+		}
+		file_line { 'ignore build/ symlink':
+			path => '/vagrant/.git/info/exclude',
+			line => 'build',
+		}
 	}
 
 	# vcsrepo task may fail unless GitHub is listed in known_hosts.
