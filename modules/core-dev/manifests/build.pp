@@ -37,6 +37,6 @@ class core-dev::build {
 			Class['grunt'],
 			Exec['npm install'],
 		],
-		creates => '/vagrant/wordpress-develop/src/wp-includes/js',
+		creates => '/vagrant/wordpress-develop/build/wp-includes/js',
 	}
 }
