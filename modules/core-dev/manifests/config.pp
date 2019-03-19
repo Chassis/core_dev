@@ -7,9 +7,8 @@ class core-dev::config {
 		match => 'require_once.*ABSPATH.*wp-settings.php',
 	}
 
-	# Add the proxy wp-config.php file to the `src/` folder
+	# Add the proxy wp-config.php file to the `src/` folder.
 	file { '/vagrant/wordpress-develop/src/wp-config.php':
 		content => template('core-dev/wp-config.php.erb'),
-		require => Class['core-dev::repository'],
 	}
 }
