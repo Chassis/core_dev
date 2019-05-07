@@ -28,7 +28,7 @@ paths:
 
 # Instruct Chassis to use this extension.
 extensions:
-  - peterwilsoncc/core-dev
+  - core-dev
 
 ```
 (Other [Chassis configuration options](http://docs.chassis.io/en/latest/config/) may be used as normal, so long as the above paths are provided correctly.)
@@ -69,7 +69,7 @@ synced_folders:
   ../wordpress-develop: /vagrant/wordpress-develop
 
 extensions:
-  - peterwilsoncc/core-dev
+  - core-dev
 
 ```
 
