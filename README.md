@@ -30,6 +30,9 @@ paths:
 extensions:
   - core-dev
 
+# Set a PHPUnit version.
+phpunit:
+  version: 7.5
 ```
 (Other [Chassis configuration options](http://docs.chassis.io/en/latest/config/) may be used as normal, so long as the above paths are provided correctly.)
 
@@ -86,6 +89,13 @@ To run a particular suite of tests, for example just the tests defined within th
 ```bash
 vagrant ssh -c 'cd /vagrant/wordpress-develop && phpunit --filter WP_Test_REST_Posts_Controller'
 ```
+
+The best version of PHPUnit to install depends on the version of PHP you are using:
+
+* PHP 5.6: PHPUnit 4.8
+* PHP 7.0: PHPUnit 6.5
+* PHP 7.1+: PHPUnit 7.5
+
 
 ## Extension Options
 
