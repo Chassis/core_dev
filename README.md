@@ -41,7 +41,7 @@ To switch the site to use the **`build`** version of the site instead, edit the 
 
 ### A Note on the WordPress Build Process
 
-**PLEASE NOTE:** The provisioner will run `npm install` and `grunt` for you after cloning the repository, so you can get started right away. However, subsequent `npm` or `grunt` commands are left to you, the developer. If you have made changes to the code and are using the `/src` directory, run `grunt build --dev` to rebuild the project into the `/src` directory if you do not see your changes. If you are using `/src`, run `grunt` or `grunt build`. See the [WordPress core contributor handbook](https://make.wordpress.org/core/handbook/) for more information on building & developing WordPress.
+**PLEASE NOTE:** The provisioner will run `npm install` and `grunt` for you after cloning the repository, so you can get started right away. However, subsequent `npm` or `grunt` commands are left to you, the developer. If you have made changes to the code and are using the `/src` directory, run `grunt build --dev` to rebuild the project into the `/src` directory if you do not see your changes. If you are using `/build`, run `grunt` or `grunt build`. See the [WordPress core contributor handbook](https://make.wordpress.org/core/handbook/) for more information on building & developing WordPress.
 
 (Commands may be run either within the Chassis VM — _e.g._ `vagrant ssh -c 'cd /vagrant/wordpress-develop && grunt build --dev` — or else you may run `npm install` within your host operating system and run the builds with `grunt` locally on your machine. Builds may be faster on the host system than within the VM, but using the VM's versions of Node and Grunt means you need less tooling installed outside Chassis.)
 
