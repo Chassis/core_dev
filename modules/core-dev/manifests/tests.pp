@@ -1,5 +1,6 @@
 include vcsrepo
 
+# Set the WordPress database test constants.
 class core-dev::tests (
 	$database = 'wordpress_tests',
 	$database_user = 'wordpress',
