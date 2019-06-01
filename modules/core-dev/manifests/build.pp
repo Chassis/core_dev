@@ -20,7 +20,7 @@ class core-dev::build {
 	# Run grunt to build the project.
 	exec { 'grunt build --dev':
 		command => '/usr/bin/grunt build --dev',
-		cwd     => "/vagrant/wordpress-develop",
+		cwd     => '/vagrant/wordpress-develop',
 		user    => 'vagrant',
 		require => [
 			Class['grunt'],
@@ -31,7 +31,7 @@ class core-dev::build {
 
 	exec { 'grunt build':
 		command => '/usr/bin/grunt build',
-		cwd     => "/vagrant/wordpress-develop",
+		cwd     => '/vagrant/wordpress-develop',
 		user    => 'vagrant',
 		require => [
 			Class['grunt'],

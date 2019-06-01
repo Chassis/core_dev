@@ -1,3 +1,4 @@
+# Adjust the default Chassis wp-config.php
 class core-dev::config {
 	# Configure Chassis' wp-config.php per the WP Core Development guide:
 	# http://docs.chassis.io/en/latest/guides/#wordpress-core-development
