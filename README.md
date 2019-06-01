@@ -15,7 +15,7 @@ Next, create an empty `config.local.yaml` file in the root of the Chassis checko
 
 ```yaml
 # Specify the .local hostname of your choice.
-host:
+hosts:
   - core.local
 
 paths:
