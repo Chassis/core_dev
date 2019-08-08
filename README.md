@@ -28,7 +28,7 @@ paths:
 
 # Instruct Chassis to use this extension.
 extensions:
-  - core-dev
+  - core_dev
 
 # Set a PHPUnit version.
 phpunit:
@@ -72,7 +72,7 @@ synced_folders:
   ../wordpress-develop: /vagrant/wordpress-develop
 
 extensions:
-  - core-dev
+  - core_dev
 
 ```
 
@@ -99,7 +99,7 @@ The best version of PHPUnit to install depends on the version of PHP you are usi
 
 ## Extension Options
 
-Define a `core-dev` key in your `config.local.yaml` to configure this extension.
+Define a `core_dev` key in your `config.local.yaml` to configure this extension.
 
 ```yml
 # config.local.yaml

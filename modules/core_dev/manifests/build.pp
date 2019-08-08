@@ -1,5 +1,5 @@
 # Class to install dependencies and build WordPress into `/src` and `/build`.
-class core-dev::build {
+class core_dev::build {
 	exec { 'upgrade npm':
 		command => '/usr/bin/npm install -g npm',
 		user    => 'root',
@@ -12,7 +12,7 @@ class core-dev::build {
 		user    => 'vagrant',
 		require => [
 			Exec['upgrade npm'],
-			Class['core-dev::repository'],
+			Class['core_dev::repository'],
 		],
 		creates => '/vagrant/wordpress-develop/node_modules',
 	}

@@ -1,7 +1,7 @@
 include vcsrepo
 
 # Class to prepare the Chassis box for WP core development.
-class core-dev::repository (
+class core_dev::repository (
 	$config
 ) {
 	# Ensure SVN is installed.
@@ -40,10 +40,10 @@ class core-dev::repository (
 	# already a checkout of any sort in `/vagrant/wordpress-develop`.
 	unless $::core_dev_repository == present {
 		# Permit a develop repo mirror remote to be specified in config.local.yaml.
-		if ( !empty($config['core-dev']) and !empty($config['core-dev']['mirror']) ) {
+		if ( !empty($config['core_dev']) and !empty($config['core_dev']['mirror']) ) {
 			$repository_remotes = {
 				'origin' => 'git://develop.git.wordpress.org/',
-				'mirror' => $config['core-dev']['mirror']
+				'mirror' => $config['core_dev']['mirror']
 			}
 		} else {
 			$repository_remotes = { 'origin' => 'git://develop.git.wordpress.org/' }

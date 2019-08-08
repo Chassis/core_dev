@@ -1,7 +1,7 @@
 include vcsrepo
 
 # Set the WordPress database test constants.
-class core-dev::tests (
+class core_dev::tests (
 	$database = 'wordpress_tests',
 	$database_user = 'wordpress',
 	$database_password = 'vagrantpassword',
@@ -20,7 +20,7 @@ class core-dev::tests (
 	}
 
 	file { '/vagrant/wordpress-develop/wp-tests-config.php':
-		content => template('core-dev/wp-tests-config.php.erb'),
+		content => template('core_dev/wp-tests-config.php.erb'),
 	}
 
 	# See https://make.wordpress.org/core/handbook/contribute/git/#unit-tests

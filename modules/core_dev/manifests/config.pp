@@ -1,5 +1,5 @@
 # Adjust the default Chassis wp-config.php
-class core-dev::config {
+class core_dev::config {
 	# Configure Chassis' wp-config.php per the WP Core Development guide:
 	# http://docs.chassis.io/en/latest/guides/#wordpress-core-development
 	file_line { 'adjust chassis wp-config.php':
@@ -10,6 +10,6 @@ class core-dev::config {
 
 	# Add the proxy wp-config.php file to the `src/` folder.
 	file { '/vagrant/wordpress-develop/src/wp-config.php':
-		content => template('core-dev/wp-config.php.erb'),
+		content => template('core_dev/wp-config.php.erb'),
 	}
 }
