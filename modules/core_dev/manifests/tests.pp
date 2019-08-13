@@ -30,6 +30,6 @@ class core_dev::tests (
 		provider => svn,
 		source   => 'https://plugins.svn.wordpress.org/wordpress-importer/trunk/',
 		user     => 'vagrant',
-		require => Class['core_dev::repository'],
+		require  => Class['core_dev::repository'],
 	}
 }
