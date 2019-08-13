@@ -12,5 +12,6 @@ class core_dev::config {
 	# Add the proxy wp-config.php file to the `src/` folder.
 	file { '/vagrant/wordpress-develop/src/wp-config.php':
 		content => template('core_dev/wp-config.php.erb'),
+		require => Class['core_dev::repository'],
 	}
 }
