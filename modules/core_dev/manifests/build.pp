@@ -25,6 +25,7 @@ class core_dev::build {
 		require => [
 			Class['grunt'],
 			Exec['npm install'],
+			Class['core_dev::repository'],
 		],
 		creates => '/vagrant/wordpress-develop/src/wp-includes/js',
 	}
@@ -36,6 +37,7 @@ class core_dev::build {
 		require => [
 			Class['grunt'],
 			Exec['npm install'],
+			Class['core_dev::repository'],
 		],
 		creates => '/vagrant/wordpress-develop/build/wp-includes/js',
 	}

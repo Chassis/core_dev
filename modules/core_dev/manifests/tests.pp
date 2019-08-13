@@ -21,6 +21,7 @@ class core_dev::tests (
 
 	file { '/vagrant/wordpress-develop/wp-tests-config.php':
 		content => template('core_dev/wp-tests-config.php.erb'),
+		require => Class['core_dev::repository'],
 	}
 
 	# See https://make.wordpress.org/core/handbook/contribute/git/#unit-tests
@@ -29,5 +30,6 @@ class core_dev::tests (
 		provider => svn,
 		source   => 'https://plugins.svn.wordpress.org/wordpress-importer/trunk/',
 		user     => 'vagrant',
+		require => Class['core_dev::repository'],
 	}
 }
