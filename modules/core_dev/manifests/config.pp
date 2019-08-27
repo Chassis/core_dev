@@ -5,8 +5,8 @@ class core_dev::config {
 	file_line { 'adjust chassis wp-config.php':
 		path     => '/vagrant/wp-config.php',
 		multiple => true,
-		line     => "if ( ! defined( 'WP_CLI' ) ) { \n\trequire_once( ABSPATH . 'wp-settings.php' );\n}",
-		match    => 'require_once.*ABSPATH.*wp-settings.php',
+		line     => "if ( ! defined( 'WP_CLI' ) ) {\n\trequire_once( ABSPATH . 'wp-settings.php' );\n}",
+		match    => '^require_once.*ABSPATH.*wp-settings.php',
 	}
 
 	# Add the proxy wp-config.php file to the `src/` folder.
