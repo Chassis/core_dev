@@ -1,12 +1,13 @@
 <?php
 // phpcs:ignoreFile
 
-/* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-if ( defined( 'WP_RUN_CORE_TESTS' ) && WP_RUN_CORE_TESTS ) {
-	define( 'ABSPATH', dirname( __FILE__ ) . '/build/' );
-} else {
-	define( 'ABSPATH', dirname( __FILE__ ) . '/src/' );
-}
+/*
+ * Path to the WordPress codebase you'd like to test, with a trailing slash.
+ *
+ * The Chassis/core_dev extension assumes you wish to run the tests directly
+ * against the wordpress-develop repository's src directory.
+ */
+define( 'ABSPATH', dirname( __FILE__ ) . '/src/' );
 
 /*
  * Path to the theme to test with.
