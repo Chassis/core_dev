@@ -111,3 +111,18 @@ core-dev:
     # repo, specify your fork's address in the `mirror` option.
     mirror: git@github.com:{your GitHub name}/wordpress-develop.git
 ```
+
+
+## Recommended Extensions
+
+There are some other useful Chassis extensions that can help to make core contributions easier. We recommend the following extensions:
+
+* [Imagick](https://github.com/Chassis/Imagick) - Imagick speeds up image processing and allows permitting better testing of media component work.
+* [Intl](https://github.com/Chassis/intl) - A Chassis extension to install and configure Intl on your server.
+* [BC Math](https://github.com/Chassis/BCMath) - BCMath provides arbitrary precision mathematics.
+* [MailHog](https://github.com/Chassis/MailHog) - Catch all the emails WordPress sends while you're developing using Chassis!
+* [XDebug](https://github.com/Chassis/Xdebug) - Xdebug is an extension for PHP to assist with debugging and development. 
+* [WP_CLI](https://github.com/Chassis/WP_CLI) - A Chassis extension to automate the installation of WP-CLI packages.
+* [Whoops](https://github.com/Chassis/Whoops) - A Chassis extension to install Whoops for PHP error reporting.
+* [Debugging](https://github.com/Chassis/Debugging) - A Chassis extension to install and activate common WordPress plugins used for debugging during development.
+
