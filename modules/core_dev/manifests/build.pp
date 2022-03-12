@@ -10,6 +10,7 @@ class core_dev::build {
 		command => '/usr/bin/npm install',
 		cwd     => '/vagrant/wordpress-develop',
 		user    => 'vagrant',
+		timeout => 0,
 		require => [
 			Exec['upgrade npm'],
 			Class['core_dev::repository'],
