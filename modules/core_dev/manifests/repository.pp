@@ -55,6 +55,7 @@ class core_dev::repository (
 			remote   => 'origin',
 			source   => $repository_remotes,
 			user     => 'vagrant',
+			before   => Chassis::Wp[$config[hosts][0]]
 		}
 	}
 }
