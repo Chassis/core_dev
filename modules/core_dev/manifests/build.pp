@@ -7,15 +7,15 @@ class core_dev::build {
 	}
 
 	exec { 'npm install':
-		command   => '/usr/bin/npm install',
-		cwd       => '/vagrant/wordpress-develop',
-		user      => 'vagrant',
-		timeout   => 0,
-		require   => [
+		command => '/usr/bin/npm install',
+		cwd     => '/vagrant/wordpress-develop',
+		user    => 'vagrant',
+		timeout => 0,
+		require => [
 			Exec['upgrade npm'],
 			Class['core_dev::repository'],
 		],
-		creates   => '/vagrant/wordpress-develop/node_modules',
+		creates => '/vagrant/wordpress-develop/node_modules',
 	}
 
 	# Run grunt to build the project.
