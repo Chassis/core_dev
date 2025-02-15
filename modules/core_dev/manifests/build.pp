@@ -18,28 +18,15 @@ class core_dev::build {
 		creates => '/vagrant/wordpress-develop/node_modules',
 	}
 
-	# Run grunt to build the project.
-	exec { 'grunt build --dev':
-		command => '/usr/bin/grunt build --dev',
+	# Run npm run build:dev to build the project.
+	exec { 'npm run build:dev':
+		command => '/usr/bin/npm run build:dev',
 		cwd     => '/vagrant/wordpress-develop',
 		user    => 'vagrant',
 		require => [
-			Class['grunt'],
 			Exec['npm install'],
 			Class['core_dev::repository'],
 		],
 		creates => '/vagrant/wordpress-develop/src/wp-includes/js',
-	}
-
-	exec { 'grunt build':
-		command => '/usr/bin/grunt build',
-		cwd     => '/vagrant/wordpress-develop',
-		user    => 'vagrant',
-		require => [
-			Class['grunt'],
-			Exec['npm install'],
-			Class['core_dev::repository'],
-		],
-		creates => '/vagrant/wordpress-develop/build/wp-includes/js',
 	}
 }

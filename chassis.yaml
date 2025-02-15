@@ -10,7 +10,6 @@ version: 2
 # a repository within the Chassis GitHub organization.
 dependencies:
   - composer
-  - grunt
   - chassis/phpunit
   - nodejs
   - npm
